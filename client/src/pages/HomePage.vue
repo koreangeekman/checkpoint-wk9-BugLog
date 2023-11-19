@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid">
-    <section class="row">
-      <div class="col-12 d-flex justify-content-between align-items-center px-4 pt-3">
-        <p class="fs-1 mb-0 fw-bold">Bugs</p>
+    <section class="row px-md-5">
+      <div class="col-12 d-flex justify-content-between align-items-center px-4 pt-5">
+        <p class="fs-3 mb-0 fw-bold">Bugs</p>
         <button class="btn btn-primary">Report Bug</button>
       </div>
       <div class="col-12 p-3">
@@ -13,15 +13,20 @@
               <th class="title px-2 mx-1 me-md-2 w-md-25">Title</th>
               <th class="mx-1 mx-md-2 d-flex align-items-center justify-content-center flex-wrap">
                 <p class="mb-0 mx-1 me-md-2">Priority</p>
-                <i class="fs-5 mdi mdi-sort px-1 rounded border border-dark" type="button" @click="sortMethod()"></i>
+                <i class="fs-5 mdi mdi-sort px-1 rounded border border-dark bg-light my-1" type="button"
+                  @click="sortMethod()"></i>
               </th>
               <th class="reportedBy mx-1 mx-md-2 w-md-25">Reported By</th>
               <th class="lastUpdated mx-1 mx-md-2">Last Updated</th>
-              <th class="filter d-flex justify-content-center">
-                <span class="d-flex align-items-center border border-dark bg-light rounded-pill" type="button"
-                  @click="filterToggle()">
+              <th class="filter d-flex justify-content-end">
+                <span v-if="filterByState" type="button" @click="filterToggle()"
+                  class="d-flex align-items-center border border-dark bg-light rounded-pill">
+                  <p class="mb-0 mx-1 mx-md-2">Open Bugs</p>
+                </span>
+                <span v-else type="button" @click="filterToggle()"
+                  class="d-flex align-items-center border border-dark bg-light rounded-pill">
                   <p class="mb-0 mx-1 mx-md-2">All Bugs</p>
-                  <div class="dot rounded-circle border border-dark"></div>
+                  <div class="dot split rounded-circle"></div>
                 </span>
               </th>
             </tr>
@@ -33,7 +38,7 @@
               <td class="courier">{{ bug.creator.email }}</td>
               <td class="courier">{{ day(bug.updatedAt) + ' ' + bug.updatedAt.toLocaleDateString() }}
               </td>
-              <td class="d-flex align-items-center justify-content-center">
+              <td class="d-flex align-items-center justify-content-end p-2">
                 <p class=" mb-0 me-2">{{ bug.closed ? 'Closed' : 'Open' }}</p>
                 <div class="dot rounded-circle border border-dark" :class="bug.closed ? 'closed' : 'open'"></div>
               </td>
@@ -107,20 +112,28 @@ export default {
   background-color: skyblue;
 }
 
-.dot {
-  height: 2rem;
-  width: 2rem;
-}
 
 .priority {
   background-color: wheat;
 }
 
+.dot {
+  height: 2rem;
+  width: 2rem;
+}
+
+.split {
+  background-image: linear-gradient(to right, orangered 50%, greenyellow 50%);
+  border-left: 1px solid black;
+}
+
 .open {
   background-color: orangered;
+  opacity: .9;
 }
 
 .closed {
   background-color: greenyellow;
+  opacity: .7;
 }
 </style>

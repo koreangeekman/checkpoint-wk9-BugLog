@@ -55,7 +55,8 @@ class BugsService {
           closed: true,
           closedDate: new Date()
         }
-      }
+      },
+      { new: true }
     );
     if (!bug) { throw new BadRequest('Unable to locate a matching bug with your ID') }
     return bug

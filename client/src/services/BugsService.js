@@ -40,6 +40,13 @@ class BugsService {
     AppState.bugs.push(new Bug(res.data));
   }
 
+  async closeBug(bugObj) {
+    const res = await api.delete('api/bugs/' + bugObj.id);
+    bugObj.closed = true;
+    bugObj.closedDate = new Date();
+    logger.log('Bug has been squashed.', res.data);
+  }
+
   async trackBug(bugId, accountId) {
     const tracking = AppState.trackers.find(track => track.accountId == accountId);
     if (!tracking) {

@@ -20,7 +20,9 @@
             <p class="mb-0 text-secondary">Last Updated</p>
             <p class="mb-0 fw-bold fs-5 courier">{{ day(bug.updatedAt) + ' ' + bug.updatedAt.toLocaleDateString() }}</p>
           </span>
-          <span v-if="!bug.closed" class="mx-3 d-flex align-items-center rounded-pill border border-dark">
+          <span v-if="!bug.closed" type="button" @click="closeBug(bug)"
+            :class="bug.creatorId != account.id ? 'noClicky' : ''"
+            class="mx-3 d-flex align-items-center rounded-pill border border-dark">
             <p class="mb-0 ms-4 me-3">Open</p>
             <div class="rounded-circle border-start border-dark dot open"></div>
           </span>
@@ -41,7 +43,9 @@
 <script>
 import { AppState } from '../AppState';
 import { computed } from 'vue';
+import Pop from "../utils/Pop.js";
 import { Bug } from "../models/Bug.js";
+import { bugsService } from "../services/BugsService.js";
 
 export default {
   props: { bug: { type: Bug } },
@@ -56,6 +60,15 @@ export default {
         const day = week[date.getDay()];
         return day.slice(0, 3);
       },
+
+      async closeBug(bugObj) {
+        try {
+          const yes = await Pop.confirm('Squash this bug?');
+          if (!yes) { return }
+          await bugsService.closeBug(bugObj);
+        }
+        catch (error) { Pop.error(error); }
+      }
 
     }
   }
@@ -85,5 +98,9 @@ export default {
 .closed {
   background-color: greenyellow;
   opacity: .7;
+}
+
+.noClicky {
+  pointer-events: none;
 }
 </style>

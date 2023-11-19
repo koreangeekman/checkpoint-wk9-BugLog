@@ -13,12 +13,13 @@
         <div class="heading rounded-end rounded-bottom p-3">
           <div class="bg-light border border-dark rounded p-3" v-if="selectedBug">
             <BugCard :bug="selectedBug" />
-            <span class="d-flex">
+            <span class="d-flex align-items-center">
               <button v-if="account.id" class="btn btn-success fs-5" @click="trackBug()">
                 <i class="mdi mdi-magnify"></i> Track
               </button>
-              <div v-for="tracker in trackers" class="mx-1">
-                <img :src="tracker.picture" :alt="tracker.name" class="tracker border border-dark rounded m-1">
+              <div v-for="tracker in trackers" class="ms-1">
+                <img :src="tracker.tracker.picture" :alt="tracker.tracker.name"
+                  class="tracker border border-dark rounded">
               </div>
             </span>
           </div>
@@ -59,6 +60,8 @@ export default {
     onMounted(() => {
       if (!AppState.selectedBug || AppState.selectedBug.id != route.params.bugId) {
         _getBugById();
+      }
+      if (!AppState.trackers || AppState.trackers.bugId != route.params.bugId) {
         _getTrackersByBugId();
       }
     });
@@ -66,13 +69,10 @@ export default {
       account: computed(() => AppState.account),
       trackers: computed(() => AppState.trackers),
       selectedBug: computed(() => AppState.selectedBug),
+
       async trackBug() {
-        try {
-          await bugsService.trackBug(selectedBug.id);
-        }
-        catch (error) {
-          Pop.error(error);
-        }
+        try { await bugsService.trackBug(this.selectedBug.id, this.account.id); }
+        catch (error) { Pop.error(error); }
       }
     };
   },
@@ -93,5 +93,6 @@ export default {
 
 .tracker {
   border: 1px solid black;
+  height: 3rem;
 }
 </style>

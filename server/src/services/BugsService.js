@@ -15,13 +15,14 @@ class BugsService {
 
   async getBugs(query) {
     const bugs = await dbContext.Bugs.find(query)
+      .populate('creator', 'name email picture')
       .sort({ updatedAt: -1 });
     return bugs
   }
 
   async getBugById(_id) {
     const bug = (await dbContext.Bugs.findById(_id))
-      .populate('creator', 'name picture');
+      .populate('creator', 'name email picture');
     return bug
   }
 

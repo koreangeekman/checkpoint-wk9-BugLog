@@ -35,6 +35,11 @@ class BugsService {
     AppState.bugs.push(new Bug(res.data));
   }
 
+  async trackBug(bugId) {
+    const res = await api.post('api/trackedbugs', { bugId });
+    AppState.trackers.push(new TrackedBug(res.data));
+  }
+
   selectBug(bugObj) {
     AppState.selectedBug = bugObj;
   }

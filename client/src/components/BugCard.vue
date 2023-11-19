@@ -10,9 +10,11 @@
               <p class="mb-0 fw-bold fs-5">{{ bug.creator.email }}</p>
             </span>
           </span>
-          <span class="mx-3">
+          <span class="mx-3 text-center">
             <p class="mb-0 text-secondary">Priority</p>
-            <p class="mb-0 fw-bold fs-5">{{ bug.priority }}</p>
+            <p class="mb-0 fw-bold fs-5 rounded" :class="bug.priority == 5 ? 'highPriority' : ''">
+              {{ bug.priority }}
+            </p>
           </span>
           <span class="mx-3">
             <p class="mb-0 text-secondary">Last Updated</p>
@@ -64,6 +66,10 @@ export default {
 <style lang="scss" scoped>
 .courier {
   font-family: 'Courier New', Courier, monospace;
+}
+
+.highPriority {
+  background-color: yellow !important;
 }
 
 .dot {

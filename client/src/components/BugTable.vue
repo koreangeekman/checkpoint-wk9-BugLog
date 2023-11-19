@@ -23,8 +23,8 @@
           </span>
         </th>
       </tr>
-      <tr v-for="(bug, i) in bugs" class="fs-5 pointer selectable lighten-30"
-        :class="i % 2 == 0 ? 'bg-light' : 'bg-secondary'" @click="selectBug(bug)">
+      <tr v-for="(bug, i) in bugs" class="fs-5 pointer selectable" @click="selectBug(bug)"
+        :class="bug.priority == 5 ? 'highPriority' : ''">
         <BugList :bug="bug" />
       </tr>
 
@@ -79,6 +79,10 @@ export default {
 .heading {
   background-color: skyblue;
   border: 2px solid skyblue;
+}
+
+.highPriority {
+  background-color: yellow !important;
 }
 
 .dot {

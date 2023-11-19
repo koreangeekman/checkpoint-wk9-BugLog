@@ -17,8 +17,9 @@
               <button v-if="account.id" class="btn btn-success fs-5" @click="trackBug()">
                 <i class="mdi mdi-magnify"></i> Track
               </button>
-              <img v-for="tracker in trackers" :src="tracker.picture" :alt="tracker.name"
-                class="tracker border border-dark rounded m-1">
+              <div v-for="tracker in trackers" class="mx-1">
+                <img :src="tracker.picture" :alt="tracker.name" class="tracker border border-dark rounded m-1">
+              </div>
             </span>
           </div>
         </div>
@@ -33,39 +34,49 @@ import { useRoute } from "vue-router";
 import { AppState } from '../AppState';
 import { computed, onMounted } from 'vue';
 import { bugsService } from "../services/BugsService.js";
+import BugCard from "../components/BugCard.vue";
+import Pop from "../utils/Pop.js";
 
 export default {
   setup() {
     const route = useRoute();
-
     async function _getBugById() {
-      try { await bugsService.getBugById(route.params.bugId); }
-      catch (error) { Pop.error(error); }
+      try {
+        await bugsService.getBugById(route.params.bugId);
+      }
+      catch (error) {
+        Pop.error(error);
+      }
     }
     async function _getTrackersByBugId() {
-      try { await bugsService.getTrackersByBugId(route.params.bugId); }
-      catch (error) { Pop.error(error); }
+      try {
+        await bugsService.getTrackersByBugId(route.params.bugId);
+      }
+      catch (error) {
+        Pop.error(error);
+      }
     }
-
     onMounted(() => {
       if (!AppState.selectedBug || AppState.selectedBug.id != route.params.bugId) {
         _getBugById();
         _getTrackersByBugId();
       }
-    })
-
+    });
     return {
       account: computed(() => AppState.account),
       trackers: computed(() => AppState.trackers),
       selectedBug: computed(() => AppState.selectedBug),
-
       async trackBug() {
-        try { await bugsService.trackBug(selectedBug.id); }
-        catch (error) { Pop.error(error); }
+        try {
+          await bugsService.trackBug(selectedBug.id);
+        }
+        catch (error) {
+          Pop.error(error);
+        }
       }
-
-    }
-  }
+    };
+  },
+  components: { BugCard }
 };
 </script>
  

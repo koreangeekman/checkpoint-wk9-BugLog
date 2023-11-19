@@ -6,7 +6,7 @@ class NotesService {
 
   async getNotesByBugId(bugId) {
     const notes = await dbContext.Notes.find({ bugId })
-      .populate('creator', 'name picture')
+      .populate('creator', 'name email picture')
       .populate('bug');
     return notes
   }
@@ -15,7 +15,7 @@ class NotesService {
 
   async createNote(noteObj) {
     const newNote = await dbContext.Notes.create(noteObj);
-    await newNote.populate('creator', 'name picture');
+    await newNote.populate('creator', 'name email picture');
     await newNote.populate('bug');
     return newNote
   }

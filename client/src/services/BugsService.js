@@ -1,5 +1,6 @@
 import { AppState } from "../AppState.js";
 import { Bug } from "../models/Bug.js";
+import { Note } from "../models/Note.js";
 import { TrackedBug } from "../models/TrackedBug.js";
 import { logger } from "../utils/Logger.js";
 import { api } from "./AxiosService.js";
@@ -10,6 +11,7 @@ function _resetBugsArray() {
 function _clearData() {
   AppState.selectedBug = null;
   AppState.trackers = [];
+  AppState.notes = [];
 }
 
 class BugsService {
@@ -30,9 +32,24 @@ class BugsService {
     AppState.bugs = res.data.map(bug => new Bug(bug.bug));
   }
 
+  async getNotesByBugId(bugId) {
+    const res = await api.get(`api/bugs/${bugId}/notes`);
+    AppState.notes = res.data.map(note => new Note(note));
+  }
+
   async getTrackersByBugId(bugId) {
     const res = await api.get(`api/bugs/${bugId}/trackedbugs`);
     AppState.trackers = res.data.map(tracker => new TrackedBug(tracker));
+  }
+
+  async addNote(newNote) {
+    const res = await api.post('api/notes', newNote);
+    AppState.notes.push(new Note(res.data));
+  }
+
+  async removeNote(noteObj) {
+    const res = await api.delete('api/notes/' + noteObj.id);
+    AppState.notes = AppState.notes.filter(note => note.id != noteObj.id);
   }
 
   async reportBug(newBug) {

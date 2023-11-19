@@ -4,7 +4,7 @@
       <div class="col-12 pt-5 d-flex">
         <span class="d-flex align-items-center rounded-top title shadow">
           <p v-if="selectedBug?.id" class="fs-3 mb-0 p-3 h-100 fw-bold">{{ selectedBug?.title }}</p>
-          <button v-if="account.id" @click="editBug()" class="btn btn-primary">
+          <button v-if="selectedBug?.creatorId == account.id" @click="editBug()" class="btn btn-primary">
             <i class="fs-1 mdi mdi-pencil"></i>
           </button>
         </span>
@@ -40,10 +40,29 @@
                 <button class="btn btn-primary shadow" type="submit">send note</button>
               </div>
             </form>
-            <div v-for="note in notes" class="my-2">
-              <div class="title">{{ note.creator.email }}</div>
-              <div class="body">{{ note.body }}</div>
+
+            <div v-for="note in notes" class="my-2 mx-5">
+              <span class="d-flex shadow">
+                <span class="d-flex align-items-center rounded-top rounded-end shadow title">
+                  <img :src="note.creator.picture" :alt="note.creator.name" class="noteImg rounded m-2">
+                  <p class="mb-0 me-2">{{ note.creator.email }}</p>
+                </span>
+                <span v-if="note.creatorId == account.id" class="">
+                  <button @click="editNote(note)" class="btn btn-primary rounded-top">
+                    <i class="fs-1 mdi mdi-pencil"></i>
+                  </button>
+                  <button @click="removeNote(note)" class="btn btn-danger rounded-top">
+                    <i class="fs-1 mdi mdi-delete"></i>
+                  </button>
+                </span>
+              </span>
+              <div class="body mb-2 p-3 shadow rounded-bottom w-100">
+                <p class="mb-0">
+                  {{ note.body }}
+                </p>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -67,21 +86,18 @@ export default {
     const noteForm = ref({});
 
     async function _getBugById() {
-      try {
-        await bugsService.getBugById(route.params.bugId);
-      }
-      catch (error) {
-        Pop.error(error);
-      }
+      try { await bugsService.getBugById(route.params.bugId); }
+      catch (error) { Pop.error(error); }
     }
     async function _getTrackersByBugId() {
-      try {
-        await bugsService.getTrackersByBugId(route.params.bugId);
-      }
-      catch (error) {
-        Pop.error(error);
-      }
+      try { await bugsService.getTrackersByBugId(route.params.bugId); }
+      catch (error) { Pop.error(error); }
     }
+    async function _getNotesByBugId() {
+      try { await bugsService.getNotesByBugId(route.params.bugId); }
+      catch (error) { Pop.error(error); }
+    }
+
     onMounted(() => {
       if (!AppState.selectedBug || AppState.selectedBug.id != route.params.bugId) {
         _getBugById();
@@ -89,7 +105,11 @@ export default {
       if (!AppState.trackers || AppState.trackers.bugId != route.params.bugId) {
         _getTrackersByBugId();
       }
+      if (!AppState.notes || AppState.notes.bugId != route.params.bugId) {
+        _getNotesByBugId();
+      }
     });
+
     return {
       noteForm,
 
@@ -104,7 +124,13 @@ export default {
       },
 
       async addNote() {
-        try { await notesService.addNote(noteForm); }
+        noteForm.value.bugId = this.selectedBug.id;
+        try { await bugsService.addNote(noteForm.value); }
+        catch (error) { Pop.error(error); }
+      },
+
+      async removeNote(noteObj) {
+        try { await bugsService.removeNote(noteObj); }
         catch (error) { Pop.error(error); }
       }
 
@@ -130,6 +156,11 @@ export default {
 }
 
 .tracker {
+  border: 1px solid black;
+  height: 3rem;
+}
+
+.noteImg {
   border: 1px solid black;
   height: 3rem;
 }

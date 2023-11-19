@@ -124,13 +124,20 @@ export default {
       },
 
       async addNote() {
-        noteForm.value.bugId = this.selectedBug.id;
-        try { await bugsService.addNote(noteForm.value); }
+        try {
+          noteForm.value.bugId = this.selectedBug.id;
+          await bugsService.addNote(noteForm.value);
+          noteForm.value = {};
+        }
         catch (error) { Pop.error(error); }
       },
 
       async removeNote(noteObj) {
-        try { await bugsService.removeNote(noteObj); }
+        try {
+          const yes = await Pop.confirm('Delete this note?');
+          if (!yes) { return }
+          await bugsService.removeNote(noteObj);
+        }
         catch (error) { Pop.error(error); }
       }
 

@@ -1,8 +1,8 @@
 <template>
   <div class="heading p-3 border border-dark">
 
-    <table class="bg-light w-100 border-bottom border-dark mb-4 ">
-      <tr class="heading border-bottom border-dark fs-5">
+    <table class="bg-light w-100 mb-4 ">
+      <tr class="heading fs-5">
         <th class="title px-2 mx-1 me-md-2 w-md-25">Title</th>
         <th class="mx-1 mx-md-2 d-flex align-items-center justify-content-center flex-wrap">
           <p class="mb-0 mx-1 me-md-2">Priority</p>
@@ -23,8 +23,8 @@
           </span>
         </th>
       </tr>
-      <tr v-for="(bug, i) in bugs" class="border-start border-end border-dark fs-5"
-        :class="i % 2 == 0 ? 'bg-light' : 'bg-secondary'">
+      <tr v-for="(bug, i) in bugs" class="fs-5 pointer selectable lighten-30"
+        :class="i % 2 == 0 ? 'bg-light' : 'bg-secondary'" @click="selectBug(bug)">
         <BugList :bug="bug" />
       </tr>
 
@@ -38,9 +38,13 @@
 import { AppState } from '../AppState';
 import { computed, ref } from 'vue';
 import BugList from "./BugList.vue";
+import { bugsService } from "../services/BugsService.js";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
+    const router = useRouter();
+
     const sortByPriority = ref(false);
     const filterByState = ref(false);
 
@@ -60,6 +64,10 @@ export default {
 
       sortMethod() { sortByPriority.value = !sortByPriority.value; },
       filterToggle() { filterByState.value = !filterByState.value; },
+      selectBug(bugObj) {
+        bugsService.selectBug(bugObj);
+        router.push({ name: 'BugDetail', params: { bugId: bugObj.id } });
+      },
     };
   },
   components: { BugList }
@@ -70,6 +78,7 @@ export default {
 <style lang="scss" scoped>
 .heading {
   background-color: skyblue;
+  border: 2px solid skyblue;
 }
 
 .dot {
@@ -80,5 +89,14 @@ export default {
 .split {
   background-image: linear-gradient(to right, orangered 50%, greenyellow 50%);
   border-left: 1px solid black;
+}
+
+.pointer {
+  cursor: pointer;
+  border: 2px solid white;
+}
+
+.pointer:hover {
+  border: 2px solid blue;
 }
 </style>

@@ -15,13 +15,30 @@
  
  
 <script>
+import { useRoute } from "vue-router";
 import { AppState } from '../AppState';
 import { computed, onMounted } from 'vue';
+import { bugsService } from "../services/BugsService.js";
 
 export default {
   setup() {
+    const route = useRoute();
+
+    async function _getBugById() {
+      try { await bugsService.getBugById(route.params.bugId); }
+      catch (error) { Pop.error(error); }
+    }
+
+    onMounted(() => {
+      if (!AppState.selectedBug || AppState.selectedBug.id != route.params.bugId) {
+        _getBugById();
+      }
+    })
+
     return {
-      account: computed(() => AppState.account)
+      account: computed(() => AppState.account),
+      selectedBug: computed(() => AppState.selectedBug),
+
     }
   }
 };

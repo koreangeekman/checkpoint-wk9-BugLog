@@ -8,5 +8,7 @@ export const AppState = reactive({
 
   /** @type {import('./models/Bug.js').Bug[]} */
   bugs: [],
+  /** @type {import('./models/Bug.js').Bug} */
+  selectedBug: null,
 
 })

@@ -2,8 +2,7 @@
   <td class="p-2">{{ bug.title }}</td>
   <td class="courier text-center">{{ bug.priority }}</td>
   <td class="courier">{{ bug.creator.email }}</td>
-  <td class="courier">{{ day(bug.updatedAt) + ' ' + bug.updatedAt.toLocaleDateString() }}
-  </td>
+  <td class="courier">{{ day(bug.updatedAt) + ' ' + bug.updatedAt.toLocaleDateString() }}</td>
   <td class="d-flex align-items-center justify-content-end p-2">
     <p class=" mb-0 me-2">{{ bug.closed ? 'Closed' : 'Open' }}</p>
     <div class="dot rounded-circle border border-dark" :class="bug.closed ? 'closed' : 'open'"></div>

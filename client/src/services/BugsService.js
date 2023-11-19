@@ -13,6 +13,11 @@ class BugsService {
     AppState.bugs = res.data.map(bug => new Bug(bug));
   }
 
+  async getBugById(bugId) {
+    const res = await api.get('api/bugs/' + bugId);
+    AppState.selectedBug = new Bug(res.data);
+  }
+
   async getTrackedBugsByAccount() {
     _clearData();
     const res = await api.get('account/trackedbugs');
@@ -24,7 +29,9 @@ class BugsService {
     AppState.bugs.push(new Bug(res.data));
   }
 
-
+  selectBug(bugObj) {
+    AppState.selectedBug = bugObj;
+  }
 
 }
 

@@ -25,12 +25,12 @@ class TrackedBugsService {
     return trackedBug
   }
 
-  async removeTracking(accountId, bugId) {
-    const trackedBug = await dbContext.TrackedBugs.findOne({ accountId, bugId })
+  async removeTracking(accountId, _id) {
+    const trackedBug = await dbContext.TrackedBugs.findOne({ accountId, _id })
     if (trackedBug.accountId != accountId) {
       throw new Forbidden('Not your tracking to remove');
     }
-    trackedBug.delete();
+    await trackedBug.delete();
     return trackedBug
   }
 

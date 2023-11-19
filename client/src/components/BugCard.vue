@@ -4,7 +4,8 @@
       <div class="col-12 p-0">
         <section class="heading d-flex align-items-end justify-content-between">
           <span class="d-flex align-items-end">
-            <img :src="bug.creator.picture" :alt="bug.creator.name" class="border border-dark rounded">
+            <img :src="bug.creator.picture" :alt="bug.creator.name" :title="bug.creator.name"
+              class="border border-dark rounded">
             <span class="ms-3">
               <p class="mb-0 text-secondary">Reported by</p>
               <p class="mb-0 fw-bold fs-5">{{ bug.creator.email }}</p>

@@ -52,9 +52,11 @@ class BugsService {
     AppState.notes = AppState.notes.filter(note => note.id != noteObj.id);
   }
 
-  async reportBug(newBug) {
-    const res = await api.post('api/bugs', newBug);
-    AppState.bugs.push(new Bug(res.data));
+  async reportBug(newBugData) {
+    const res = await api.post('api/bugs', newBugData);
+    const newBug = new Bug(res.data);
+    AppState.bugs.push(newBug);
+    return newBug;
   }
 
   async closeBug(bugObj) {

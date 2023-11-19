@@ -18,7 +18,7 @@
                 <i class="mdi mdi-magnify"></i> Track
               </button>
               <div v-for="tracker in trackers" class="ms-1">
-                <img :src="tracker.tracker.picture" :alt="tracker.tracker.name"
+                <img :src="tracker.tracker.picture" :alt="tracker.tracker.name" :title="tracker.tracker.name"
                   class="tracker border border-dark rounded">
               </div>
             </span>
@@ -44,7 +44,8 @@
             <div v-for="note in notes" class="my-2 mx-5">
               <span class="d-flex shadow">
                 <span class="d-flex align-items-center rounded-top rounded-end shadow title">
-                  <img :src="note.creator.picture" :alt="note.creator.name" class="noteImg rounded m-2">
+                  <img :src="note.creator.picture" :alt="note.creator.name" :title="note.creator.name"
+                    class="noteImg rounded m-2">
                   <p class="mb-0 me-2">{{ note.creator.email }}</p>
                 </span>
                 <span v-if="note.creatorId == account.id" class="">

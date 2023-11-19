@@ -4,14 +4,15 @@
       <div class="col-12 pt-5 d-flex">
         <span class="d-flex align-items-center rounded-top title shadow">
           <p v-if="selectedBug?.id" class="fs-3 mb-0 p-3 h-100 fw-bold">{{ selectedBug?.title }}</p>
-          <button v-if="selectedBug?.creatorId == account.id" @click="editBug()" class="btn btn-primary">
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBugForm"
+            v-if="selectedBug?.creatorId == account.id && !selectedBug?.closed">
             <i class="fs-1 mdi mdi-pencil"></i>
           </button>
         </span>
       </div>
       <div class="col-12">
         <div class="heading rounded-end rounded-bottom shadow p-3">
-          <div class="bg-light rounded shadow p-3" v-if="selectedBug">
+          <div class="bg-light rounded shadow p-3" v-if="selectedBug?.id">
             <BugCard :bug="selectedBug" />
             <span class="d-flex align-items-center">
               <button v-if="account.id" class="btn btn-success fs-5" @click="trackBug()">
@@ -34,7 +35,7 @@
             <form v-if="account.id" @submit.prevent="addNote()" class="w-100">
               <div class="px-5 py-3">
                 <textarea v-model="noteForm.body" name="noteForm" id="noteForm" cols="30" rows="3"
-                  class="form-control shadow" placeholder="Write something..."></textarea>
+                  class="form-control shadow" maxlength="1000" placeholder="Write something..."></textarea>
               </div>
               <div class="px-5 pb-3 text-end">
                 <button class="btn btn-primary shadow" type="submit">send note</button>
@@ -49,11 +50,11 @@
                   <p class="mb-0 me-2">{{ note.creator.email }}</p>
                 </span>
                 <span v-if="note.creatorId == account.id" class="">
-                  <button @click="editNote(note)" class="btn btn-primary rounded-top">
+                  <button v-if="false" @click="editNote(note)" class="btn btn-primary rounded-top">
                     <i class="fs-1 mdi mdi-pencil"></i>
                   </button>
                   <button @click="removeNote(note)" class="btn btn-danger rounded-top">
-                    <i class="fs-1 mdi mdi-delete"></i>
+                    <i class="fs-1 mdi mdi-trash-can"></i>
                   </button>
                 </span>
               </span>
@@ -69,6 +70,14 @@
       </div>
     </section>
   </div>
+  <ModalComponent :modalId="'editBugForm'" :showFooter="false" :editMe="true">
+    <template #modalTitle>Update bug
+      <i class="mdi mdi-bug"></i>
+    </template>
+    <template #modalBody>
+      <BugForm :editMe="true" />
+    </template>
+  </ModalComponent>
 </template>
  
  
@@ -76,9 +85,11 @@
 import { useRoute } from "vue-router";
 import { AppState } from '../AppState';
 import { computed, onMounted, ref } from 'vue';
-import { bugsService } from "../services/BugsService.js";
-import BugCard from "../components/BugCard.vue";
 import Pop from "../utils/Pop.js";
+import BugCard from "../components/BugCard.vue";
+import ModalComponent from "../components/ModalComponent.vue";
+import { bugsService } from "../services/BugsService.js";
+import BugForm from "../components/BugForm.vue";
 
 export default {
   setup() {
@@ -144,7 +155,7 @@ export default {
 
     };
   },
-  components: { BugCard }
+  components: { BugCard, ModalComponent, BugForm }
 };
 </script>
  

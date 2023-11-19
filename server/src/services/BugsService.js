@@ -40,11 +40,12 @@ class BugsService {
     const bug = await dbContext.Bugs.findOne({ _id: bugId, creatorId })
     if (!bug) { throw new BadRequest('Unable to locate a matching bug with your ID') }
     if (bug.closed) { throw new BadRequest('Cannot update bugs after closure') }
-    await bug.update(
+    const updated = await dbContext.Bugs.findOneAndUpdate(
+      { _id: bugId, creatorId },
       { $set: updates },
       { runValidators: true, setDefaultsOnInsert: true, new: true }
     );
-    return bug
+    return updated
   }
 
   async squashBug(creatorId, _id) {

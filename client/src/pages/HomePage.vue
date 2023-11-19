@@ -14,8 +14,12 @@
   </div>
 
   <ModalComponent :modalId="'bugForm'" :showFooter="false">
-    <template #modalTitle>Report a bug
-      <i class="mdi mdi-bug"></i>
+    <template #modalTitle>
+      <span class="d-flex align-items-center">
+        <i class="fs-3 mdi mdi-bug mdi-rotate-45"></i>
+        <p class="mb-0 mx-3">Report a bug</p>
+        <i class="fs-3 mdi mdi-bug mdi-spin"></i>
+      </span>
     </template>
     <template #modalBody>
       <BugForm />

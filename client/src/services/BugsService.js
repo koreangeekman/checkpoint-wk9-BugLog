@@ -55,8 +55,14 @@ class BugsService {
   async reportBug(newBugData) {
     const res = await api.post('api/bugs', newBugData);
     const newBug = new Bug(res.data);
-    AppState.bugs.push(newBug);
+    AppState.bugs.unshift(newBug);
     return newBug;
+  }
+
+  async updateBug(bugObj) {
+    const res = await api.put('api/bugs/' + bugObj.id, bugObj);
+    logger.log('Bug updates.', res.data);
+    AppState.selectedBug = new Bug(bugObj)
   }
 
   async closeBug(bugObj) {

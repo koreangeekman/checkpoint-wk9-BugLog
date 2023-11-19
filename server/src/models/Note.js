@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 
 export const NoteSchema = new Schema({
-  body: { type: String, required: true, maxLength: 100 },
+  body: { type: String, required: true, maxLength: 1000 },
   bugId: { type: Schema.Types.ObjectId, required: true, ref: 'Bug' },
   creatorId: { type: Schema.Types.ObjectId, required: true, ref: 'Account' }
 

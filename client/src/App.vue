@@ -5,6 +5,16 @@
   <main>
     <router-view />
   </main>
+  <footer class="position-relative buggy">
+    <div class="position-absolute w-100">
+      <marquee behavior="alternate" direction="down" height="120px" width="100%" scrollamount="8">
+        <i class="fs-1 mdi mdi-bug mdi-spin"></i>
+        <marquee behavior="alternate" direction="right" height="200px" width="100%" scrollamount="42">
+          <i class="fs-1 mdi mdi-bug mdi-spin"></i>
+        </marquee>
+      </marquee>
+    </div>
+  </footer>
 </template>
 
 <script>

@@ -1,12 +1,12 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid" v-if="bug?.id">
     <section class="row">
       <div class="col-12 p-0">
         <section class="heading d-flex align-items-end justify-content-between">
           <span class="d-flex align-items-end">
             <img :src="bug.creator.picture" :alt="bug.creator.name" :title="bug.creator.name"
               class="border border-dark rounded">
-            <span class="ms-3">
+            <span class="ms-3" :title="bug.creator.name">
               <p class="mb-0 text-secondary">Reported by</p>
               <p class="mb-0 fw-bold fs-5">{{ bug.creator.email }}</p>
             </span>
@@ -17,7 +17,7 @@
               {{ bug.priority }}
             </p>
           </span>
-          <span class="mx-3">
+          <span class="mx-3" :title="bug.updatedAt.toLocaleTimeString()">
             <p class="mb-0 text-secondary">Last Updated</p>
             <p class="mb-0 fw-bold fs-5 courier">{{ day(bug.updatedAt) + ' ' + bug.updatedAt.toLocaleDateString() }}</p>
           </span>
@@ -49,7 +49,7 @@ import { Bug } from "../models/Bug.js";
 import { bugsService } from "../services/BugsService.js";
 
 export default {
-  props: { bug: { type: Bug } },
+  props: { bug: { type: Bug, required: true } },
 
   setup() {
 

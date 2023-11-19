@@ -1,7 +1,7 @@
 <template>
   <div class="heading p-3 border border-dark">
 
-    <table class="bg-light w-100 mb-4 ">
+    <table class="bg-light w-100 mb-4">
       <tr class="heading fs-5">
         <th class="title px-2 mx-1 me-md-2 w-md-25">Title</th>
         <th class="mx-1 mx-md-2 d-flex align-items-center justify-content-center flex-wrap">
@@ -9,8 +9,10 @@
           <i class="fs-5 mdi mdi-sort px-1 rounded border border-dark bg-light my-1" type="button"
             @click="sortMethod()"></i>
         </th>
-        <th class="reportedBy mx-1 mx-md-2 w-md-25">Reported By</th>
-        <th class="lastUpdated mx-1 mx-md-2">Last Updated</th>
+        <th class="reportedBy w-md-25">Reported By</th>
+        <th>
+          <p class="mb-0 mx-1 mx-md-3">Last Updated</p>
+        </th>
         <th class="filter d-flex justify-content-end">
           <span v-if="filterByState" type="button" @click="filterToggle()"
             class="d-flex align-items-center border border-dark bg-light rounded-pill">
@@ -18,7 +20,7 @@
           </span>
           <span v-else type="button" @click="filterToggle()"
             class="d-flex align-items-center border border-dark bg-light rounded-pill">
-            <p class="mb-0 mx-1 mx-md-2">All Bugs</p>
+            <p class="mb-0 mx-1 mx-md-2 text-nowrap">All Bugs</p>
             <div class="dot split rounded-circle"></div>
           </span>
         </th>

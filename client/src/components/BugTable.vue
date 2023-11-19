@@ -66,7 +66,7 @@ export default {
       filterToggle() { filterByState.value = !filterByState.value; },
       selectBug(bugObj) {
         bugsService.selectBug(bugObj);
-        router.push({ name: 'BugDetail', params: { bugId: bugObj.id } });
+        router.push({ name: 'BugDetails', params: { bugId: bugObj.id } });
       },
     };
   },

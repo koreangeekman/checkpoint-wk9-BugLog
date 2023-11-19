@@ -8,9 +8,16 @@ export const TrackedBugSchema = new Schema({
 
 TrackedBugSchema.virtual('bug', {
   foreignField: '_id',
-  localField: 'creatorId',
+  localField: 'bugId',
   justOne: true,
   ref: 'Bug'
+})
+
+TrackedBugSchema.virtual('tracker', {
+  foreignField: '_id',
+  localField: 'accountId',
+  justOne: true,
+  ref: 'Account'
 })
 
 TrackedBugSchema.index({ bugId: 1, accountId: 1 }, { unique: true })

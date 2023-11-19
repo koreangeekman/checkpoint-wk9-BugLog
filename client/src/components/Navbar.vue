@@ -3,7 +3,7 @@
     <router-link class="navbar-brand d-flex me-auto" :to="{ name: 'Home' }">
       <div class="d-flex align-items-center fs-1">
         <i class="mdi mdi-bug"></i>
-        <p class="mb-0 fw-bold"> Bug Log</p>
+        <p class="mb-0 ms-3 fw-bold"> Bug Log</p>
       </div>
     </router-link>
     <!-- LOGIN COMPONENT HERE -->

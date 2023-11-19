@@ -14,7 +14,13 @@ class TrackedBugsService {
 
   async getTrackedBugsByAccount(accountId) {
     const trackedBugs = await dbContext.TrackedBugs.find({ accountId })
-      .populate('bug')
+      .populate({
+        path: 'bug',
+        populate: {
+          path: 'creator',
+          select: 'name email picture'
+        }
+      })
     return trackedBugs
   }
 
